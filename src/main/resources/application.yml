@@ -1,0 +1,4 @@
+az.servicebus:
+  connection-string: "trololo"
+  idle-timeout: 1h
+  topic-client-id: "bugoga"

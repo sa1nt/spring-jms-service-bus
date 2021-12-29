@@ -1,0 +1,163 @@
+/**
+Creates:
+* Azure Service Bus namespace on "Standard" tier (named "scien1ist" by default)
+* * Topic (named "testtopic")
+* * * Subscription "allsub"
+* * * * Subscription rule "$Default" of type SqlFilter
+        Usually fails on Create as it's the one created by default for all subscriptions
+
+* * * Subscription "jsonsub"
+* * * * Subscriptioin rule "jsonfilter" of type CorrelationFilter
+        It's supposed to accept only messages with ContentType = application/json
+
+*/
+
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionName": {
+      "defaultValue": "scien1ist",
+      "type": "String"
+    },
+    "topicName": {
+      "defaultValue": "testtopic",
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[parameters('subscriptionName')]",
+      "location": "North Europe",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "disableLocalAuth": false,
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[concat(parameters('subscriptionName'), '/RootManageSharedAccessKey')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', parameters('subscriptionName'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[concat(parameters('subscriptionName'), '/', parameters('topicName'))]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', parameters('subscriptionName'))]"
+      ],
+      "properties": {
+        "maxMessageSizeInKilobytes": 256,
+        "defaultMessageTimeToLive": "P1D",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "enableBatchedOperations": true,
+        "status": "Active",
+        "supportOrdering": true,
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/authorizationRules",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[concat(parameters('subscriptionName'), '/', parameters('topicName'), '/test')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('subscriptionName'), parameters('topicName'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', parameters('subscriptionName'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Manage",
+          "Listen",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[concat(parameters('subscriptionName'), '/', parameters('topicName'), '/allsub')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('subscriptionName'), parameters('topicName'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', parameters('subscriptionName'))]"
+      ],
+      "properties": {
+        "isClientAffine": false,
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 2,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[concat(parameters('subscriptionName'), '/', parameters('topicName'), '/jsonsub')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('subscriptionName'), parameters('topicName'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', parameters('subscriptionName'))]"
+      ],
+      "properties": {
+        "isClientAffine": false,
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 1,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+      "apiVersion": "2021-06-01-preview",
+      "name": "[concat(parameters('subscriptionName'), '/', parameters('topicName'), '/jsonsub/jsonfilter')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics/subscriptions', parameters('subscriptionName'), parameters('topicName'), 'jsonsub')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('subscriptionName'), parameters('topicName'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', parameters('subscriptionName'))]"
+      ],
+      "properties": {
+        "action": {},
+        "filterType": "CorrelationFilter",
+        "correlationFilter": {
+          "contentType": "application/json",
+          "properties": {}
+        }
+      }
+    }
+  ]
+}
