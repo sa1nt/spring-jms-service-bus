@@ -2,6 +2,13 @@
 
 The goal is to investigate how to use Azure Service Bus from a Spring Java program with minimal dependencies.
 
+## TODO
+
+1. investigate how to route messages from to different Subscriptions on a Topic, like in [RabbitMQ Topic exchange](https://www.rabbitmq.com/tutorials/tutorial-five-java.html)
+2. investigate ways to allow access to a Topic from other Azure Subscriptions
+   1. how to allow a consumer to create a Subscription for himself  
+      I don't want to keep all the Topic Subscriptions in my IaC code
+
 ## Usage
 
 ### Setup 

@@ -78,6 +78,7 @@ public class SendController {
                     var jmsMessage = (JmsMessage) m;
                     var facade = (AmqpJmsMessageFacade) jmsMessage.getFacade();
                     facade.setContentType(Symbol.valueOf(MimeTypeUtils.APPLICATION_JSON_VALUE));
+                    m.setStringProperty("objectType", "User");
                     return m;
                 }
         );

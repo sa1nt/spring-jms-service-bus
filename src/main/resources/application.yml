@@ -1,4 +1,4 @@
 az.servicebus:
   connection-string: "trololo"
   idle-timeout: 1h
-  topic-client-id: "bugoga"
+  topic-client-id: "bugoga" # JMS client ID, which is your Service Bus Subscription name in the Azure portal.
