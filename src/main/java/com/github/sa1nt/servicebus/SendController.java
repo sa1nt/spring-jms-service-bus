@@ -2,7 +2,6 @@ package com.github.sa1nt.servicebus;
 
 import org.apache.qpid.jms.JmsTopic;
 import org.apache.qpid.jms.message.JmsMessage;
-import org.apache.qpid.jms.message.facade.JmsMessageFacade;
 import org.apache.qpid.jms.provider.amqp.message.AmqpJmsMessageFacade;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.slf4j.Logger;
@@ -10,16 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 public class SendController {
@@ -31,7 +24,8 @@ public class SendController {
     private final JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
-    public SendController(JmsTemplate jmsTemplate, JmsMessagingTemplate jmsMessagingTemplate) {
+    public SendController(JmsTemplate jmsTemplate,
+                          JmsMessagingTemplate jmsMessagingTemplate) {
         this.jmsTemplate = jmsTemplate;
         this.jmsMessagingTemplate = jmsMessagingTemplate;
     }
