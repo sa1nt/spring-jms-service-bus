@@ -13,6 +13,8 @@ import javax.jms.ConnectionFactory;
 @Configuration
 public class ServiceBusConfiguration {
 
+    // commented in favor of Azure NonPremiumServiceBusJMSAutoConfiguration
+/*
     @Bean
     public ConnectionFactory asbConnectionFactory(ServiceBusProperties serviceBusProperties) {
         var serviceBusKey = ServiceBusKey.fromAzConnectionString(serviceBusProperties.connectionString());
@@ -27,6 +29,7 @@ public class ServiceBusConfiguration {
 
         return new CachingConnectionFactory(jmsConnectionFactory);
     }
+*/
 
     /**
      * Without an explicit Converter bean a Message is sent with application/x-java-serialized-object content-type and
