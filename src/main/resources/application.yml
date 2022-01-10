@@ -1,4 +1,14 @@
 az.servicebus:
-  connection-string: "trololo"
+  connection-string: ${ASB_CONNECTION_STRING}
   idle-timeout: 1h
-  topic-client-id: "bugoga" # JMS client ID, which is your Service Bus Subscription name in the Azure portal.
+  topic-client-id: "jsonsub" # JMS client ID, which is your Service Bus Subscription name in the Azure portal.
+
+spring:
+  jms:
+    servicebus:
+      connection-string: ${ASB_CONNECTION_STRING}
+      pricing-tier: "standard"
+      topic-client-id: "jsonsub"
+
+logging.level:
+  org.springframework.jms: DEBUG
