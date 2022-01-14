@@ -3,6 +3,7 @@ az.servicebus:
   idle-timeout: 1h
   topic-client-id: "jsonsub" # JMS client ID, which is your Service Bus Subscription name in the Azure portal.
 
+# Expected by Autoconfiguration in com.azure.spring:azure-spring-boot:3.12.0
 spring:
   jms:
     servicebus:

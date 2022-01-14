@@ -1,20 +1,29 @@
 package com.github.sa1nt.servicebus;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class User implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -2858981462708499862L;
 
-    private final String name;
+    private String name;
 
     public User(String name) {
         this.name = name;
     }
 
+    public User() {
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -29,7 +38,7 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return name.equals(user.name);
+        return Objects.equals(name, user.name);
     }
 
     @Override

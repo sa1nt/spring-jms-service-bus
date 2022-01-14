@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-            <version>3.12.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;dependency} -->
+            <version>3.12.0</version>
         </dependency>
 
 <!-- required to interact with Azure Service Bus -->
@@ -50,14 +50,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-<!--
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>7.0.1.Final</version>
-        </dependency>
--->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

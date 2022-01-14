@@ -7,7 +7,7 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Listener {
+public class AsbJmsListener {
     protected final Log logger = LogFactory.getLog(getClass());
 
     @JmsListener(
